@@ -11,7 +11,7 @@ import Amplify, { Auth } from 'aws-amplify'
 import AWSConfig from './aws-exports'
 Amplify.configure(AWSConfig)
 
-import Tabs from './Tabs'
+import Tabs from './components/Tabs'
 
 export default class App extends React.Component {
   state = {
@@ -24,8 +24,8 @@ export default class App extends React.Component {
     if(this.state.isAuthenticated) {
       console.log('Auth: ', Auth)
       return(
-        <View>
-          <Text>We Cool</Text>
+        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+          <Text>Hello Citizen</Text>
         </View>
       )
     }

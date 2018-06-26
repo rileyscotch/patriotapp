@@ -6,14 +6,15 @@ import { StyleSheet,
          AsyncStorage,
          TextInput,
          Button } from 'react-native';
+         
+import { Auth } from 'aws-amplify';
+
 
 export default class App extends React.Component {
   state = {
-    username: '',
-    password: '',
-    phone_number: '',
     email: '',
-    confirmationCode: ''
+    password: '',
+    // confirmationCode: ''
   }
   onChangeText(key, value) {
     this.setState({
@@ -22,19 +23,15 @@ export default class App extends React.Component {
   }
   signUp(){
     Auth.signUp({
-      username: this.state.username,
+      username: this.state.email,
       password: this.state.password,
-      attributes: {
-        email: this.state.email,
-        phone_number: this.state.phone_number
-      }
     })
     .then(() => console.log('Great Success!'))
     .catch(err => console.log('Error: ', err))
   }
 
   confirmSignUp() {
-    Auth.confirmSignUp(this.state.username, this.state.confirmationCode) 
+    Auth.confirmSignUp(this.state.email, this.state.confirmationCode) 
     .then(() => console.log('Great Success!'))
     .catch(err => console.log('Error: ', err))
   }
@@ -43,9 +40,9 @@ export default class App extends React.Component {
     return (
       <View style={styles.container}>
         <TextInput 
-          onChangeText={value => this.onChangeText('username', value)}
+          onChangeText={value => this.onChangeText('email', value)}
           style={styles.input}
-          placeholder='Username' 
+          placeholder='Email' 
         />
         <TextInput 
           onChangeText={value => this.onChangeText('password', value)}
@@ -53,16 +50,6 @@ export default class App extends React.Component {
           secureTextEntry={true}
           placeholder='Password' 
         /> 
-        <TextInput 
-          onChangeText={value => this.onChangeText('phone_number', value)}
-          style={styles.input}
-          placeholder='Phone Number' 
-        /> 
-        <TextInput 
-          onChangeText={value => this.onChangeText('email', value)}
-          style={styles.input}
-          placeholder='Email' 
-        />
         <Button title='Sign Up' onPress={this.signUp.bind(this)}/>
         <TextInput 
           onChangeText={value => this.onChangeText('confirmationCode', value)}

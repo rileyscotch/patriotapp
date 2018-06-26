@@ -11,9 +11,8 @@ import { Auth } from 'aws-amplify';
 
 export default class App extends React.Component {
   state = {
-    username: '',
+    email: '',
     password: '',
-    confirmationCode: '',
     user: {}
   }
   onChangeText(key, value) {
@@ -22,41 +21,38 @@ export default class App extends React.Component {
     })
   }
   signIn(){
-    const { username, password } = this.state
-    Auth.signIn(username, password)
+    const { email, password } = this.state
+    Auth.signIn(email, password)
     .then(user => {
         this.setState({ user })
         console.log('CRUSHING IT!')
+        this.screenProps.authenticate(true)
     })
     .catch(err => console.log('Error: ', err))
   }
-
   confirmSignIn() {
     Auth.confirmSignIn(this.state.user, this.state.confirmationCode) 
-    .then(() => {
+    .then(() => { 
         console.log('ALL SIGNED IN!')
-        this.props.screenProps.authenticate(true)
-
-    .catch(err => console.log('Error: ', err))
         
     })
-}
+    .catch(err => console.log('Error: ', err)) 
+    }
   render() {
     return (
       <View style={styles.container}>
         <TextInput 
-          onChangeText={value => this.onChangeText('username', value)}
+          onChangeText={value => this.onChangeText('email', value)}
           style={styles.input}
-          placeholder='Username' 
+          placeholder='Email' 
         />
-        
-        <Button title='Sign In' onPress={this.signIn.bind(this)}/>
         <TextInput 
-          onChangeText={value => this.onChangeText('confirmationCode', value)}
+          onChangeText={value => this.onChangeText('password', value)}
           style={styles.input}
-          placeholder='Confirmation Code' 
-        />  
-        <Button title='Confirm Sign In' onPress={this.confirmSignIn.bind(this)}/>
+          secureTextEntry={true}
+          placeholder='Password' 
+        />
+        <Button title='Sign In' onPress={this.signIn.bind(this)}/>
       </View>
     );
   }

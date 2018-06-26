@@ -12,10 +12,7 @@ features:
     components:
       sign-in-user-pools: !com.amazonaws.mobilehub.v0.UserPoolsIdentityProvider 
         attributes:
-          alias-attributes:
-            - email
-            - phone_number
-          mfa-configuration: ON
+          mfa-configuration: OFF
           name: userpool
           password-policy: !com.amazonaws.mobilehub.ConvertibleMap 
             min-length: '8'
@@ -23,5 +20,7 @@ features:
             require-numbers: true
             require-symbols: true
             require-upper-case: true
+          standard-attributes: '["email"]'
+          username-attributes: '["email"]'
 name: PatriotApp
 region: us-east-2
